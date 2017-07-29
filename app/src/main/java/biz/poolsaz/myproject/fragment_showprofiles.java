@@ -3,6 +3,7 @@ package biz.poolsaz.myproject;
 import biz.poolsaz.myproject.tools.*;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.ybq.endless.Endless;
+import com.szugyi.circlemenu.view.CircleImageView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import biz.poolsaz.myproject.tools.DataProvider;
 import biz.poolsaz.myproject.tools.GifImageView;
 import biz.poolsaz.myproject.tools.MyRecyclerProfileAdapter;
@@ -35,6 +40,7 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
     Endless endless;
     int mode;
     String modeStr;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,7 +56,7 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
         if (extra != null) {
             mode = extra.getInt("mode");
             modeStr = extra.getString("modeStr");
-            ((TextView)view.findViewById(R.id.TitleMode)).setText(modeStr);
+            ((TextView) view.findViewById(R.id.TitleMode)).setText(modeStr);
         }
         myRecycler = (RecyclerView) view.findViewById(R.id.recyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -88,14 +94,14 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
         GifImageView gifView = (GifImageView) loadingView.findViewById(R.id.loading);
         gifView.setGifImageResource(R.drawable.loading);
 
-        endless = Endless.applyTo(myRecycler,loadingView);
+        endless = Endless.applyTo(myRecycler, loadingView);
         endless.setLoadMoreListener(new Endless.LoadMoreListener() {
             @Override
             public void onLoadMore(int page) {
-                loadData(mode,page);
+                loadData(mode, page);
             }
         });
-        loadData(mode,1);
+        loadData(mode, 1);
     }
 
     @Override
@@ -105,12 +111,14 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
             asyncTask.cancel(true);
         }
     }
+
     private AsyncTask asyncTask;
 
-    private void loadData(final int mode,final int page) {
+    private void loadData(final int mode, final int page) {
 //        final int lastId = stringAdapter.getLastId();
         asyncTask = new AsyncTask<String, String, List<Person>>() {
             private List<Person> data;
+
             @Override
             protected List<Person> doInBackground(String[] strings) {
                 if (page != 1) {
@@ -122,30 +130,51 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
                 }
                 return DataProvider.request(mode, page);
             }
+
             @Override
             protected void onPostExecute(List<Person> integers) {
                 data = integers;
 //                if (page == 0) {
 //                    stringAdapter.addData(data);
 //                } else {
-                    stringAdapter.addData(data);
-                    endless.loadMoreComplete();
+                stringAdapter.addData(data);
+                endless.loadMoreComplete();
 //                }
                 super.onPostExecute(integers);
             }
         }.execute();
     }
 
+
     private ParallaxRecyclerAdapter<Person> ParallaxRecyclerAdapter(final List<Person> content) {
         ParallaxRecyclerAdapter<Person> Adapter = new ParallaxRecyclerAdapter<Person>(content) {
-
             private LayoutInflater mInflater;
+            private CircularImageView circularImageView;
+            private ProgressBar progressBar;
+
+            class loadProfPic implements LoadImageTask.Listener {
+                @Override
+                public void onImageLoaded(Bitmap bitmap) {
+//                    if (bitmap != null) {
+                    circularImageView.setImageBitmap(bitmap);
+                    progressBar.setVisibility(View.GONE); // hide the ProgressBar
+//                    }
+                }
+
+                @Override
+                public void onError() {
+                    Toast.makeText(getContext(), R.string.errLoadPic, Toast.LENGTH_LONG).show();
+                }
+            }
 
             @Override
             public void onBindViewHolderImpl(RecyclerView.ViewHolder viewHolder, ParallaxRecyclerAdapter<Person> adapter, int i) {
                 viewHolder.itemView.setOnClickListener(new showPersonDetails(content.get(i)));
-                ((TextView) viewHolder.itemView.findViewById(R.id.tvAnimalName)).setText(content.get(i).getName());
-                ((RatingBar) viewHolder.itemView.findViewById(R.id.ratingBar)).setNumStars(2);
+                ((TextView) viewHolder.itemView.findViewById(R.id.ProfName)).setText(content.get(i).getName());
+                ((RatingBar) viewHolder.itemView.findViewById(R.id.ratingBar)).setNumStars(content.get(i).getVote());
+                circularImageView = ((CircularImageView) viewHolder.itemView.findViewById(R.id.ProfilePic_showProfiles_ImageView));
+                progressBar = ((ProgressBar) view.findViewById(R.id.progressBar1));
+                new LoadImageTask(new loadProfPic()).execute(content.get(i).getProfileImg());
             }
 
             @Override
@@ -166,13 +195,14 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
 
     class showPersonDetails implements View.OnClickListener {
         Person person;
+
         public showPersonDetails(Person person) {
             this.person = person;
         }
 
         @Override
         public void onClick(View v) {
-            ((MainActivity)getActivity()).showProfile(person);
+            ((MainActivity) getActivity()).showProfile(person);
         }
     }
 
@@ -190,5 +220,6 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
     public void onItemClick(View view, int position) {
         Toast.makeText(getActivity(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
+
 
 }

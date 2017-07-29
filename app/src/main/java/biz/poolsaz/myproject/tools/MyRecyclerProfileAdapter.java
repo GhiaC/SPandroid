@@ -52,7 +52,7 @@ public class MyRecyclerProfileAdapter extends RecyclerView.Adapter<MyRecyclerPro
 
         public ViewHolder(View itemView) {
             super(itemView);
-            myTextView = (TextView) itemView.findViewById(R.id.tvAnimalName);
+            myTextView = (TextView) itemView.findViewById(R.id.NameProfile_TextView);
             itemView.setOnClickListener(this);
         }
 

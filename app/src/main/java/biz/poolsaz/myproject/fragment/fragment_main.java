@@ -36,6 +36,8 @@ public class fragment_main extends Fragment {
                 new menuItemListener(3,"home Service"));
         (view.findViewById(R.id.health)).setOnClickListener(
                 new menuItemListener(4,"health Service"));
+        (view.findViewById(R.id.carService)).setOnClickListener(
+                new menuItemListener(5,"car Service"));
     }
 
     private class menuItemListener implements View.OnClickListener{

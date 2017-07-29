@@ -36,7 +36,7 @@ public class fragment_profile extends Fragment
     TextView NameProfile = null, UserCategory = null, Decription = null, PhoneNume_TextView = null;//Description = sabeghe kar
     TextClock textClock1 , textClock2;
     RatingBar UserRate = null;
-
+    String phoneNumber;
     SliderLayout mDemoSlider;
 
     int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
@@ -76,6 +76,7 @@ public class fragment_profile extends Fragment
             String SPstartWorkTime = extra.getString("SPstartWorkTime");
             String SPendWorkTime = extra.getString("SPendWorkTime");
             String SPphoneNumber = extra.getString("SPphoneNumber");
+            phoneNumber = SPphoneNumber;
             int SPvote = extra.getInt("SPvote");
 
             int SPbusy = extra.getInt("SPbusy");
@@ -196,7 +197,7 @@ public class fragment_profile extends Fragment
 
     public void call(View v) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:0123456789"));
+        intent.setData(Uri.parse("tel:"+phoneNumber));
         startActivity(intent);
     }
 

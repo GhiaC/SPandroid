@@ -18,7 +18,7 @@ public class DataProvider {
         int last = start + 10;
         InputFileReader inputFileReader = new InputFileReader();
 
-        String json = inputFileReader.readURL("http://192.168.1.7:8080/sp/api/SPusers/" + mode + "/" + page);
+        String json = inputFileReader.readURL("https://poolsaz.biz/SP/api/SPusers/" + mode + "/" + page);
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(json);
