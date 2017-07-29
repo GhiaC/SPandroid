@@ -11,19 +11,25 @@ import biz.poolsaz.myproject.io.InputFileReader;
 
 public class DataProvider {
 
-    public static List<Person> request(int lastId, int count) {
+    public static List<Person> request(int mode, int page) {
         // TODO
         ArrayList<Person> data = new ArrayList<>();
-        int start = lastId + 1;
-        int last = start + count;
+        int start = page * 10;
+        int last = start + 10;
         InputFileReader inputFileReader = new InputFileReader();
 
-        String json =  inputFileReader.readURL("http://192.168.1.7:8080/sp/api/SP");
+        String json = inputFileReader.readURL("http://192.168.1.7:8080/sp/api/SPusers/" + mode + "/" + page);
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(json);
+        } catch (Exception e) {
 
-        for (; start < last; start++) {
+        }
+        int i = 0;
+        if (jsonArray != null)
+            for (; start < last; start++) {
                 try {
-                    JSONArray jsonArray = new JSONArray(json);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
                     int SPid = jsonObject.getInt("SPid");
                     int Cid = jsonObject.getInt("Cid");
                     String name = jsonObject.getString("name");
@@ -36,11 +42,12 @@ public class DataProvider {
                     int vote = jsonObject.getInt("vote");
                     int busy = jsonObject.getInt("busy");
                     int status = jsonObject.getInt("status");
-                    data.add(new Person(SPid,Cid,name,profileImg,pictuers,startWorkTime,endWorkTime,discreption,phoneNumber,vote,busy,status));
-                }catch (Exception e){
+                    data.add(new Person(SPid, Cid, name, profileImg, pictuers, startWorkTime, endWorkTime, discreption, phoneNumber, vote, busy, status));
+                    i++;
+                } catch (Exception e) {
 
                 }
-        }
+            }
         return data;
     }
 }

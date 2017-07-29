@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     fragment_main myFragmentMain = new fragment_main();
     fragment_profile myFragmentProfile ;
-    fragment_showprofiles myFragmentShowProfile = new fragment_showprofiles();
+    fragment_showprofiles myFragmentShowProfile;
 
     Fragment init;
 
@@ -43,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    public void showProfiles(int mode ,String modeStr) {
+        myFragmentShowProfile = new fragment_showprofiles();
+        Bundle bundle = new Bundle();
+        bundle.putInt("mode", mode);
+        bundle.putString("modeStr", modeStr);
+        myFragmentShowProfile.setArguments(bundle);
+        loadFragment(myFragmentShowProfile,true);
+    }
     public void showProfile(Person person){
         myFragmentProfile = new fragment_profile();
         Bundle bundle = new Bundle();
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(myFragmentProfile,true);
     }
 
-    public void loadFragment(final Fragment fragment, boolean addToBackStack) {
+    private void loadFragment(final Fragment fragment, boolean addToBackStack) {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(init);
         fragmentTransaction.add(R.id.MainFrag, fragment);
@@ -78,17 +86,4 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(myFragmentMain,true);
     }
 
-    public void seeProfile(View v) {
-        myFragmentProfile = new fragment_profile();
-        Bundle bundle = new Bundle();
-        bundle.putInt("ID", 1234);
-
-
-        myFragmentProfile.setArguments(bundle);
-        loadFragment(myFragmentProfile,true);
-    }
-
-    public void test(View v) {
-        loadFragment(myFragmentShowProfile,true);
-    }
 }

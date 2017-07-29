@@ -33,6 +33,8 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
     RecyclerView myRecycler;
     ParallaxRecyclerAdapter<Person> stringAdapter;
     Endless endless;
+    int mode;
+    String modeStr;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,7 +46,12 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Bundle extra = getArguments();
+        if (extra != null) {
+            mode = extra.getInt("mode");
+            modeStr = extra.getString("modeStr");
+            ((TextView)view.findViewById(R.id.TitleMode)).setText(modeStr);
+        }
         myRecycler = (RecyclerView) view.findViewById(R.id.recyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -85,10 +92,10 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
         endless.setLoadMoreListener(new Endless.LoadMoreListener() {
             @Override
             public void onLoadMore(int page) {
-                loadData(page);
+                loadData(mode,page);
             }
         });
-        loadData(0);
+        loadData(mode,1);
     }
 
     @Override
@@ -100,21 +107,20 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
     }
     private AsyncTask asyncTask;
 
-    private void loadData(final int page) {
-        final int lastId = stringAdapter.getLastId();
-//        Toast.makeText(view.getContext(),lastId,Toast.LENGTH_LONG).show();
+    private void loadData(final int mode,final int page) {
+//        final int lastId = stringAdapter.getLastId();
         asyncTask = new AsyncTask<String, String, List<Person>>() {
             private List<Person> data;
             @Override
             protected List<Person> doInBackground(String[] strings) {
-                if (page != 0) {
+                if (page != 1) {
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                return DataProvider.request(lastId, 5);
+                return DataProvider.request(mode, page);
             }
             @Override
             protected void onPostExecute(List<Person> integers) {
