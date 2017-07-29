@@ -123,7 +123,7 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
             protected List<Person> doInBackground(String[] strings) {
                 if (page != 1) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -157,7 +157,7 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
                 public void onImageLoaded(Bitmap bitmap) {
 //                    if (bitmap != null) {
                     circularImageView.setImageBitmap(bitmap);
-                    progressBar.setVisibility(View.GONE); // hide the ProgressBar
+                    progressBar.setVisibility(View.INVISIBLE); // hide the ProgressBar
 //                    }
                 }
 
@@ -173,7 +173,7 @@ public class fragment_showprofiles extends Fragment implements MyRecyclerProfile
                 ((TextView) viewHolder.itemView.findViewById(R.id.ProfName)).setText(content.get(i).getName());
                 ((RatingBar) viewHolder.itemView.findViewById(R.id.ratingBar)).setNumStars(content.get(i).getVote());
                 circularImageView = ((CircularImageView) viewHolder.itemView.findViewById(R.id.ProfilePic_showProfiles_ImageView));
-                progressBar = ((ProgressBar) view.findViewById(R.id.progressBar1));
+                progressBar = ((ProgressBar) viewHolder.itemView.findViewById(R.id.progressBar1));
                 new LoadImageTask(new loadProfPic()).execute(content.get(i).getProfileImg());
             }
 
