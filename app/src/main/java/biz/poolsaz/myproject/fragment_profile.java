@@ -58,8 +58,16 @@ public class fragment_profile extends Fragment
         PhoneNume_TextView = (TextView) view.findViewById(R.id.PhoneNume_TextView);
         textClock1 = (TextClock) view.findViewById(R.id.textClock1);
         textClock2 = (TextClock) view.findViewById(R.id.textClock2);
-
+        view.findViewById(R.id.call).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                call();
+            }
+        });
         Bundle extra = getArguments();
+
+
+
 //[[1,0,"Masoud",null,null,"00:00:00","00:00:00",null,"09360840616",0,0,0]]
 //`SPid`,`Cid`,`SPname`,`SPprofileImg`,`SPpictures`,`SPstartWorkTime`,`SPendWorkTime`,`SPdiscreption`,`SPphoneNumber`,`SPvote`,`SPbusy`,`SPstatus`
 
@@ -195,7 +203,7 @@ public class fragment_profile extends Fragment
         PhoneNume_TextView.setText(phoneNumber);
     }
 
-    public void call(View v) {
+    public void call() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:"+phoneNumber));
         startActivity(intent);

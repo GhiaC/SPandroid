@@ -54,8 +54,8 @@ dependencies {
 //    compile 'jp.wasabeef:recyclerview-animators:2.2.7'
     compile 'com.github.gabrielemariotti.recyclerview:recyclerview-animators:0.3.0-SNAPSHOT@aar'
 
-
     //
-
     compile 'com.felipecsl:gifimageview:2.1.0' //Loading
+    compile 'com.google.maps.android:android-maps-utils:0.5+' // sp location in profile fragment
+
 }

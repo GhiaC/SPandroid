@@ -6,40 +6,40 @@
 
     <com.szugyi.circlemenu.view.CircleImageView
         android:id="@+id/charity"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:elevation="6dp"
         android:src="@drawable/charityicon2"
         circle:name="calendar" />
 
     <com.szugyi.circlemenu.view.CircleImageView
         android:id="@+id/shops"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:elevation="6dp"
         android:src="@drawable/shopsicon"
         circle:name="calendar" />
 
     <com.szugyi.circlemenu.view.CircleImageView
         android:id="@+id/carService"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:elevation="6dp"
         android:src="@drawable/carservice3"
         circle:name="calendar" />
 
     <com.szugyi.circlemenu.view.CircleImageView
         android:id="@+id/homeService"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:elevation="6dp"
         android:src="@drawable/homeservice"
         circle:name="calendar" />
 
     <com.szugyi.circlemenu.view.CircleImageView
         android:id="@+id/health"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:elevation="6dp"
         android:src="@drawable/hospital"
         circle:name="calendar" />
